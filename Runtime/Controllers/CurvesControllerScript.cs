@@ -132,6 +132,33 @@ namespace UnityCurves.Controllers
         /// </summary>
         public IApproximateBezierCurveKeySegments BakedTargetPathKeySegments { get; private set; } = new ApproximateBezierCurveKeySegments(Array.Empty<IApproximateBezierCurveKeySegment>());
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// Preview target gizmo type
+        /// </summary>
+        public EGizmoType PreviewTargetGizmoType { get; set; } = EGizmoType.Sphere;
+
+        /// <summary>
+        /// Preview target gizmo color
+        /// </summary>
+        public Color PreviewTargetGizmoColor { get; set; } = Color.cyan;
+
+        /// <summary>
+        /// Preview target gizmo size
+        /// </summary>
+        public float PreviewTargetGizmoSize { get; set; } = 1.0f;
+
+        /// <summary>
+        /// Preview target forward gizmo color
+        /// </summary>
+        public Color PreviewTargetForwardGizmoColor { get; set; } = Color.cyan;
+
+        /// <summary>
+        /// Preview target forward gizmo size
+        /// </summary>
+        public float PreviewTargetForwardGizmoSize { get; set; } = 10.0f;
+#endif
+
         /// <summary>
         /// Bakes target path key segments
         /// </summary>
@@ -199,10 +226,25 @@ namespace UnityCurves.Controllers
         protected virtual void OnDrawGizmosSelected()
         {
             Color old_color = Gizmos.color;
-            Gizmos.color = Color.cyan;
+            Gizmos.color = PreviewTargetForwardGizmoColor;
             IApproximateBezierCurveObjectState target_state = TargetState;
-            Gizmos.DrawLine(target_state.Position, target_state.Position + (target_state.Forward * 10.0f));
-            Gizmos.DrawSphere(target_state.Position, 1.0f);
+            Gizmos.DrawLine(target_state.Position, target_state.Position + (target_state.Forward * PreviewTargetForwardGizmoSize));
+            Gizmos.color = PreviewTargetGizmoColor;
+            switch (PreviewTargetGizmoType)
+            {
+                case EGizmoType.Cube:
+                    Gizmos.DrawCube(target_state.Position, Vector3.one * PreviewTargetGizmoSize);
+                    break;
+                case EGizmoType.Sphere:
+                    Gizmos.DrawSphere(target_state.Position, PreviewTargetGizmoSize);
+                    break;
+                case EGizmoType.WireCube:
+                    Gizmos.DrawWireCube(target_state.Position, Vector3.one * PreviewTargetGizmoSize);
+                    break;
+                case EGizmoType.WireSphere:
+                    Gizmos.DrawWireSphere(target_state.Position, PreviewTargetGizmoSize);
+                    break;
+            }
             Gizmos.color = old_color;
         }
 #endif

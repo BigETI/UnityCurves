@@ -113,6 +113,11 @@ namespace UnityCurvesEditor.EditorScripts
                         EHandleCap.Sphere => false,
                         _ => throw new System.NotImplementedException(),
                     };
+                    curves_controller.PreviewTargetGizmoType = curves_settings.PreviewTargetGizmoType;
+                    curves_controller.PreviewTargetGizmoColor = curves_settings.PreviewTargetGizmoColor;
+                    curves_controller.PreviewTargetGizmoSize = curves_settings.PreviewTargetGizmoSize;
+                    curves_controller.PreviewTargetForwardGizmoColor = curves_settings.PreviewTargetForwardGizmoColor;
+                    curves_controller.PreviewTargetForwardGizmoSize = curves_settings.PreviewTargetForwardGizmoSize;
                     for (int index = 0; index < keys.Count; index++)
                     {
                         BezierCurveKeyData target_path_key = keys[index];

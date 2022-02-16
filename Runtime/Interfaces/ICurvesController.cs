@@ -51,5 +51,32 @@ namespace UnityCurves
         /// Baked target path key segments
         /// </summary>
         IApproximateBezierCurveKeySegments BakedTargetPathKeySegments { get; }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Preview target gizmo type
+        /// </summary>
+        EGizmoType PreviewTargetGizmoType { get; set; }
+
+        /// <summary>
+        /// Preview target gizmo color
+        /// </summary>
+        Color PreviewTargetGizmoColor { get; set; }
+
+        /// <summary>
+        /// Preview target gizmo size
+        /// </summary>
+        float PreviewTargetGizmoSize { get; set; }
+
+        /// <summary>
+        /// Preview target forward gizmo color
+        /// </summary>
+        Color PreviewTargetForwardGizmoColor { get; set; }
+
+        /// <summary>
+        /// Preview target forward gizmo size
+        /// </summary>
+        float PreviewTargetForwardGizmoSize { get; set; }
+#endif
     }
 }

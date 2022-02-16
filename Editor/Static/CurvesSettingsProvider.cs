@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityCurves;
 using UnityEditor;
 using UnityEngine;
 
@@ -32,13 +33,20 @@ namespace UnityCurvesEditor
                     if (settings)
                     {
                         ScrollViewPosition = EditorGUILayout.BeginScrollView(ScrollViewPosition);
+                        settings.CurvesColor = EditorGUILayout.ColorField(new GUIContent("Curves color"), settings.CurvesColor);
+                        settings.CurveLineThickness = EditorGUILayout.FloatField("Curve line thickness", settings.CurveLineThickness);
+                        settings.PreviewTargetGizmoType = (EGizmoType)EditorGUILayout.EnumPopup("Preview target gizmo type", settings.PreviewTargetGizmoType);
+                        settings.PreviewTargetGizmoColor = EditorGUILayout.ColorField(new GUIContent("Preview target gizmo color"), settings.PreviewTargetGizmoColor);
+                        settings.PreviewTargetGizmoSize = EditorGUILayout.FloatField("Preview target gizmo size", settings.PreviewTargetGizmoSize);
+                        settings.PreviewTargetForwardGizmoColor = EditorGUILayout.ColorField(new GUIContent("Preview target forward gizmo color"), settings.PreviewTargetForwardGizmoColor);
+                        settings.PreviewTargetForwardGizmoSize = EditorGUILayout.FloatField("Preview target forward gizmo size", settings.PreviewTargetForwardGizmoSize);
                         settings.PrimaryFontColor = EditorGUILayout.ColorField(new GUIContent("Primary font color"), settings.PrimaryFontColor, true, false, false);
                         settings.SecondaryFontColor = EditorGUILayout.ColorField(new GUIContent("Secondary font color"), settings.SecondaryFontColor, true, false, false);
                         settings.KeyHandleCap = (EHandleCap)EditorGUILayout.EnumPopup("Key handle cap", settings.KeyHandleCap);
                         settings.KeyColor = EditorGUILayout.ColorField("Key color", settings.KeyColor);
                         settings.KeyHandleSizeMultiplier = EditorGUILayout.FloatField("Key handle size multiplier", settings.KeyHandleSizeMultiplier);
-                        settings.PrimaryKeyTangentColor = EditorGUILayout.ColorField("Key color", settings.PrimaryKeyTangentColor);
-                        settings.SecondaryKeyTangentColor = EditorGUILayout.ColorField("Key color", settings.SecondaryKeyTangentColor);
+                        settings.PrimaryKeyTangentColor = EditorGUILayout.ColorField("Primary key tangent color", settings.PrimaryKeyTangentColor);
+                        settings.SecondaryKeyTangentColor = EditorGUILayout.ColorField("Secondary key tangent color", settings.SecondaryKeyTangentColor);
                         EditorGUILayout.EndScrollView();
                     }
                 },

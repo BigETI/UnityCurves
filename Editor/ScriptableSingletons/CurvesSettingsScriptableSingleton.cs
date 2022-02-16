@@ -1,3 +1,4 @@
+using UnityCurves;
 using UnityEditor;
 using UnityEngine;
 
@@ -24,6 +25,38 @@ namespace UnityCurvesEditor
         [SerializeField]
         [Min(0.0f)]
         private float curveLineThickness = 10.0f;
+
+        /// <summary>
+        /// Preview target gizmo type
+        /// </summary>
+        [SerializeField]
+        private EGizmoType previewTargetGizmoType = EGizmoType.Sphere;
+
+        /// <summary>
+        /// Preview target gizmo color
+        /// </summary>
+        [SerializeField]
+        private Color previewTargetGizmoColor = Color.cyan;
+
+        /// <summary>
+        /// Preview target gizmo size
+        /// </summary>
+        [SerializeField]
+        [Min(0.0f)]
+        private float previewTargetGizmoSize = 1.0f;
+
+        /// <summary>
+        /// Preview target forward gizmo size
+        /// </summary>
+        [SerializeField]
+        private Color previewTargetForwardGizmoColor = Color.cyan;
+
+        /// <summary>
+        /// Preview target gizmo size
+        /// </summary>
+        [SerializeField]
+        [Min(0.0f)]
+        private float previewTargetForwardGizmoSize = 10.0f;
 
         /// <summary>
         /// Primary font color
@@ -96,6 +129,88 @@ namespace UnityCurvesEditor
                 if (curveLineThickness != new_curve_line_thickness)
                 {
                     curveLineThickness = new_curve_line_thickness;
+                    Save(true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Preview target gizmo type
+        /// </summary>
+        public EGizmoType PreviewTargetGizmoType
+        {
+            get => previewTargetGizmoType;
+            set
+            {
+                if (previewTargetGizmoType != value)
+                {
+                    previewTargetGizmoType = value;
+                    Save(true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Preview target gizmo color
+        /// </summary>
+        public Color PreviewTargetGizmoColor
+        {
+            get => previewTargetGizmoColor;
+            set
+            {
+                if (previewTargetGizmoColor != value)
+                {
+                    previewTargetGizmoColor = value;
+                    Save(true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Preview target gizmo size
+        /// </summary>
+        public float PreviewTargetGizmoSize
+        {
+            get => previewTargetGizmoSize;
+            set
+            {
+                float new_preview_target_gizmo_size = Mathf.Max(value, 0.0f);
+                if (previewTargetGizmoSize != new_preview_target_gizmo_size)
+                {
+                    previewTargetGizmoSize = new_preview_target_gizmo_size;
+                    Save(true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Preview target forward gizmo size
+        /// </summary>
+        public Color PreviewTargetForwardGizmoColor
+        {
+            get => previewTargetForwardGizmoColor;
+            set
+            {
+                if (previewTargetForwardGizmoColor != value)
+                {
+                    previewTargetForwardGizmoColor = value;
+                    Save(true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Preview target gizmo size
+        /// </summary>
+        public float PreviewTargetForwardGizmoSize
+        {
+            get => previewTargetForwardGizmoSize;
+            set
+            {
+                float new_preview_target_forward_gizmo_size = Mathf.Max(value, 0.0f);
+                if (previewTargetForwardGizmoSize != new_preview_target_forward_gizmo_size)
+                {
+                    previewTargetForwardGizmoSize = new_preview_target_forward_gizmo_size;
                     Save(true);
                 }
             }

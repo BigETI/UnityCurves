@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityCurves;
+using UnityEngine;
 using UnityPatternsEditor;
 
 /// <summary>
@@ -20,6 +21,31 @@ namespace UnityCurvesEditor
         /// Curve line thickness
         /// </summary>
         float CurveLineThickness { get; set; }
+
+        /// <summary>
+        /// Preview target gizmo type
+        /// </summary>
+        EGizmoType PreviewTargetGizmoType { get; set; }
+
+        /// <summary>
+        /// Preview target gizmo color
+        /// </summary>
+        Color PreviewTargetGizmoColor { get; set; }
+
+        /// <summary>
+        /// Preview target gizmo size
+        /// </summary>
+        float PreviewTargetGizmoSize { get; set; }
+
+        /// <summary>
+        /// Preview target forward gizmo size
+        /// </summary>
+        Color PreviewTargetForwardGizmoColor { get; set; }
+
+        /// <summary>
+        /// Preview target gizmo size
+        /// </summary>
+        float PreviewTargetForwardGizmoSize { get; set; }
 
         /// <summary>
         /// Primary font color
