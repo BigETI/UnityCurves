@@ -1,0 +1,16 @@
+{
+    "name": "com.bigeti.curves",
+    "version": "1.0.0",
+    "displayName": "Unity Curves",
+    "description": "This package contains modules to define curves and use them to for example animate objects through them.",
+    "dependencies": {},
+    "keywords": [
+        "curve",
+        "curves"
+    ],
+    "author": {
+        "name": "Ethem Kurt",
+        "email": "bigeti.ethem@gmail.com",
+        "url": "https://bigeti.de/"
+    }
+}
