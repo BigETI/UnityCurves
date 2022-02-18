@@ -15,7 +15,7 @@ namespace UnityCurvesEditor.EditorScripts
     /// <summary>
     /// A class that describes a curves controller editor script
     /// </summary>
-    [CustomEditor(typeof(CurvesControllerScript))]
+    [CustomEditor(typeof(BaseCurvesControllerScript), true)]
     public class CurvesControllerEditorScript : AEditorScript, ICurvesControllerEditor
     {
         /// <summary>
@@ -75,18 +75,18 @@ namespace UnityCurvesEditor.EditorScripts
         /// </summary>
         private void OnSceneGUI()
         {
-            if (target is CurvesControllerScript curves_controller)
+            if (target is BaseCurvesControllerScript base_curves_controller)
             {
                 CurvesSettingsScriptableSingleton curves_settings = CurvesSettingsScriptableSingleton.instance;
                 if (curves_settings)
                 {
                     Matrix4x4 old_matrix = Handles.matrix;
                     Color old_color = Handles.color;
-                    Handles.matrix = curves_controller.transform.localToWorldMatrix;
+                    Handles.matrix = base_curves_controller.transform.localToWorldMatrix;
                     Vector3 offset = Vector3.zero;
                     Camera camera = SceneView.currentDrawingSceneView ? SceneView.currentDrawingSceneView.camera : null;
                     Quaternion camera_rotation = camera ? camera.transform.rotation : Quaternion.identity;
-                    List<BezierCurveKeyData> keys = curves_controller.TargetPath.Keys;
+                    List<BezierCurveKeyData> keys = base_curves_controller.Path.Keys;
                     string primary_font_color_code = GetColorCode(curves_settings.PrimaryFontColor);
                     string secondary_font_color_code = GetColorCode(curves_settings.SecondaryFontColor);
                     Handles.CapFunction handle_cap_function = curves_settings.KeyHandleCap switch
@@ -113,11 +113,14 @@ namespace UnityCurvesEditor.EditorScripts
                         EHandleCap.Sphere => false,
                         _ => throw new System.NotImplementedException(),
                     };
-                    curves_controller.PreviewTargetGizmoType = curves_settings.PreviewTargetGizmoType;
-                    curves_controller.PreviewTargetGizmoColor = curves_settings.PreviewTargetGizmoColor;
-                    curves_controller.PreviewTargetGizmoSize = curves_settings.PreviewTargetGizmoSize;
-                    curves_controller.PreviewTargetForwardGizmoColor = curves_settings.PreviewTargetForwardGizmoColor;
-                    curves_controller.PreviewTargetForwardGizmoSize = curves_settings.PreviewTargetForwardGizmoSize;
+                    if (base_curves_controller is CurvesControllerScript curves_controller)
+                    {
+                        curves_controller.PreviewTargetGizmoType = curves_settings.PreviewTargetGizmoType;
+                        curves_controller.PreviewTargetGizmoColor = curves_settings.PreviewTargetGizmoColor;
+                        curves_controller.PreviewTargetGizmoSize = curves_settings.PreviewTargetGizmoSize;
+                        curves_controller.PreviewTargetForwardGizmoColor = curves_settings.PreviewTargetForwardGizmoColor;
+                        curves_controller.PreviewTargetForwardGizmoSize = curves_settings.PreviewTargetForwardGizmoSize;
+                    }
                     for (int index = 0; index < keys.Count; index++)
                     {
                         BezierCurveKeyData target_path_key = keys[index];
@@ -144,7 +147,7 @@ namespace UnityCurvesEditor.EditorScripts
                                 (target_path_key.EndTangent != new_end_tangent)
                             )
                             {
-                                Undo.RecordObject(curves_controller, "Modify curve properties");
+                                Undo.RecordObject(base_curves_controller, "Modify curve properties");
                                 BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, index, new_start_position, new_end_position, new_start_tangent, new_end_tangent, target_path_key.IsEndPositionConnected, target_path_key.IsEndTangentConnected);
                                 serializedObject.ApplyModifiedPropertiesWithoutUndo();
                                 RepaintWindow();
@@ -156,7 +159,7 @@ namespace UnityCurvesEditor.EditorScripts
                             Vector3 button_handle_position = offset + ((target_path_key.EndPosition - target_path_key.StartPosition) * 0.5f);
                             float handle_size = HandleUtility.GetHandleSize(button_handle_position) * curves_settings.KeyHandleSizeMultiplier;
                             Handles.Label(button_handle_position, $"<color=\"#{ primary_font_color_code }\">Key :</color> <color=\"#{ secondary_font_color_code }\">{ index }</color>", labelGUIStyle);
-                            if (Handles.Button(button_handle_position, is_handle_cap_2d ? (Quaternion.Inverse(curves_controller.transform.rotation) * camera_rotation) : Quaternion.identity, handle_size, handle_size, handle_cap_function))
+                            if (Handles.Button(button_handle_position, is_handle_cap_2d ? (Quaternion.Inverse(base_curves_controller.transform.rotation) * camera_rotation) : Quaternion.identity, handle_size, handle_size, handle_cap_function))
                             {
                                 SelectedIndex = index;
                                 RepaintWindow();
