@@ -74,7 +74,7 @@ namespace UnityCurves.Controllers
 #endif
 
         /// <summary>
-        /// Gets invoked when script gets started
+        /// Gets invoked when script has been started
         /// </summary>
         protected override void Start()
         {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityCurves.Data;
 using UnityEngine;
+using UnityParallel;
 using UnityPatterns.Controllers;
 
 /// <summary>
@@ -119,7 +119,7 @@ namespace UnityCurves.Controllers
         }
 
         /// <summary>
-        /// Gets invoked when script gets started
+        /// Gets invoked when script has been started
         /// </summary>
         protected virtual void Start() => BakeTargetPathKeySegments();
 
