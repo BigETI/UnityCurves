@@ -25,6 +25,18 @@ namespace UnityCurves.Data
         private Vector3 endPosition;
 
         /// <summary>
+        /// Start up vector angle in degrees
+        /// </summary>
+        [SerializeField]
+        private float startUpVectorAngle;
+
+        /// <summary>
+        /// End up vector angle in degrees
+        /// </summary>
+        [SerializeField]
+        private float endUpVectorAngle;
+
+        /// <summary>
         /// Start tangent
         /// </summary>
         [SerializeField]
@@ -41,6 +53,12 @@ namespace UnityCurves.Data
         /// </summary>
         [SerializeField]
         private bool isEndPositionConnected;
+
+        /// <summary>
+        /// Is end up vector angle connected
+        /// </summary>
+        [SerializeField]
+        private bool isEndUpVectorAngleConnected;
 
         /// <summary>
         /// Is end tangent connected
@@ -64,6 +82,24 @@ namespace UnityCurves.Data
         {
             get => endPosition;
             set => endPosition = value;
+        }
+
+        /// <summary>
+        /// Start up vector angle in degrees
+        /// </summary>
+        public float StartUpVectorAngle
+        {
+            get => startUpVectorAngle;
+            set => startUpVectorAngle = value;
+        }
+
+        /// <summary>
+        /// End up vector angle in degrees
+        /// </summary>
+        public float EndUpVectorAngle
+        {
+            get => endUpVectorAngle;
+            set => endUpVectorAngle = value;
         }
 
         /// <summary>
@@ -92,6 +128,15 @@ namespace UnityCurves.Data
             get => isEndPositionConnected;
             set => isEndPositionConnected = value;
         }
+        
+        /// <summary>
+        /// Is end up vector angle connected
+        /// </summary>
+        public bool IsEndUpVectorAngleConnected
+        {
+            get => isEndUpVectorAngleConnected;
+            set => isEndUpVectorAngleConnected = value;
+        }
 
         /// <summary>
         /// Is end tangent connected
@@ -107,17 +152,23 @@ namespace UnityCurves.Data
         /// </summary>
         /// <param name="startPosition"></param>
         /// <param name="endPosition"></param>
+        /// <param name="startUpVectorAngle">Start up vector angle in degrees</param>
+        /// <param name="endUpVectorAngle">End up vector angle in degrees</param>
         /// <param name="startTangent"></param>
         /// <param name="endTangent"></param>
         /// <param name="isEndPositionConnected"></param>
+        /// <param name="isEndUpVectorAngleConnected">Is end up vector angle connected</param>
         /// <param name="isEndTangentConnected"></param>
-        public BezierCurveKeyData(Vector3 startPosition, Vector3 endPosition, Vector3 startTangent, Vector3 endTangent, bool isEndPositionConnected, bool isEndTangentConnected)
+        public BezierCurveKeyData(Vector3 startPosition, Vector3 endPosition, float startUpVectorAngle, float endUpVectorAngle, Vector3 startTangent, Vector3 endTangent, bool isEndPositionConnected, bool isEndUpVectorAngleConnected, bool isEndTangentConnected)
         {
             this.startPosition = startPosition;
             this.endPosition = endPosition;
+            this.startUpVectorAngle = startUpVectorAngle;
+            this.endUpVectorAngle = endUpVectorAngle;
             this.startTangent = startTangent;
             this.endTangent = endTangent;
             this.isEndPositionConnected = isEndPositionConnected;
+            this.isEndUpVectorAngleConnected = isEndUpVectorAngleConnected;
             this.isEndTangentConnected = isEndTangentConnected;
         }
 
@@ -128,12 +179,13 @@ namespace UnityCurves.Data
         /// <returns>Position</returns>
         public Vector3 GetPosition(float time)
         {
-            float remaining_time = 1f - time;
-            float time_squared = time * time;
+            float clamped_time = Mathf.Clamp01(time);
+            float remaining_time = 1f - clamped_time;
+            float time_squared = clamped_time * clamped_time;
             float remaining_time_squared = remaining_time * remaining_time;
             float remaining_time_cubed = remaining_time_squared * remaining_time;
-            float time_cubed = time_squared * time;
-            return (remaining_time_cubed * startPosition) + (3.0f * remaining_time_squared * time * startTangent) + (3.0f * remaining_time * time_squared * endTangent) + (time_cubed * endPosition);
+            float time_cubed = time_squared * clamped_time;
+            return (remaining_time_cubed * startPosition) + (3.0f * remaining_time_squared * clamped_time * startTangent) + (3.0f * remaining_time * time_squared * endTangent) + (time_cubed * endPosition);
         }
 
         /// <summary>
@@ -191,7 +243,7 @@ namespace UnityCurves.Data
                 Vector3 end_position = GetPosition(time);
                 Vector3 delta = end_position - start_position;
                 float length = delta.magnitude;
-                approximateSegments[offset + index] = new ApproximateBezierCurveKeySegment(length, delta / length, delta);
+                approximateSegments[offset + index] = new ApproximateBezierCurveKeySegment(length, delta / length, Mathf.Lerp(startUpVectorAngle, endUpVectorAngle, time), delta);
                 start_position = end_position;
             }
             return approximateSegments;

@@ -37,10 +37,17 @@ namespace UnityCurves
         IApproximateBezierCurveKeySegments BakedPathKeySegments { get; }
 
         /// <summary>
-        /// Gets Bézier curve object state
+        /// Gets the approximate bezier curve point in world space
+        /// </summary>
+        /// <param name="localApproximateBezierCurvePoint">Local approximate bezier curve point</param>
+        /// <returns>Approximate bezier curve point in world space</returns>
+        IApproximateBezierCurvePoint GetWorldApproximateBezierCurvePoint(IApproximateBezierCurvePoint localApproximateBezierCurvePoint);
+
+        /// <summary>
+        /// Gets an approximate Bézier curve point
         /// </summary>
         /// <param name="progress">Progress</param>
-        /// <returns>Bézier curve object state</returns>
-        IApproximateBezierCurveObjectState GetBezierCurveObjectState(float progress);
+        /// <returns>Approximate Bézier curve point</returns>
+        IApproximateBezierCurvePoint GetApproximateBezierCurvePoint(float progress);
     }
 }

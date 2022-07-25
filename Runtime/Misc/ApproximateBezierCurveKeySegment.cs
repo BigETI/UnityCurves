@@ -19,6 +19,11 @@ namespace UnityCurves
         /// Forward vector
         /// </summary>
         public Vector3 Forward { get; }
+        
+        /// <summary>
+        /// Up vector angle in degrees
+        /// </summary>
+        public float UpVectorAngle { get; }
 
         /// <summary>
         /// Delta
@@ -30,11 +35,13 @@ namespace UnityCurves
         /// </summary>
         /// <param name="length">Length</param>
         /// <param name="forward">Forward vector</param>
+        /// <param name="upVectorAngle">Up vector angle in degrees</param>
         /// <param name="delta">Delta</param>
-        public ApproximateBezierCurveKeySegment(float length, Vector3 forward, Vector3 delta)
+        public ApproximateBezierCurveKeySegment(float length, Vector3 forward, float upVectorAngle, Vector3 delta)
         {
             Length = length;
             Forward = forward;
+            UpVectorAngle = upVectorAngle;
             Delta = delta;
         }
     }

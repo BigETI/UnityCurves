@@ -6,9 +6,9 @@
 namespace UnityCurves
 {
     /// <summary>
-    /// An interface that represents an approximate bezier curve object state
+    /// An interface that represents an approximate bezier curve point
     /// </summary>
-    public interface IApproximateBezierCurveObjectState
+    public interface IApproximateBezierCurvePoint
     {
         /// <summary>
         /// Position
@@ -19,5 +19,15 @@ namespace UnityCurves
         /// Forward vector
         /// </summary>
         Vector3 Forward { get; }
+
+        /// <summary>
+        /// Up vector
+        /// </summary>
+        Vector3 Up { get; }
+
+        /// <summary>
+        /// Progress
+        /// </summary>
+        float Progress { get; }
     }
 }

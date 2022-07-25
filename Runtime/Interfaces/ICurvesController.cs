@@ -23,7 +23,7 @@ namespace UnityCurves
         /// <summary>
         /// Target state
         /// </summary>
-        IApproximateBezierCurveObjectState TargetState { get; }
+        IApproximateBezierCurvePoint TargetState { get; }
 
 #if UNITY_EDITOR
         /// <summary>

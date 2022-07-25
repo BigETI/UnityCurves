@@ -21,6 +21,16 @@ namespace UnityCurves
         Vector3 EndPosition { get; set; }
 
         /// <summary>
+        /// Start up vector angle in degrees
+        /// </summary>
+        float StartUpVectorAngle { get; set; }
+
+        /// <summary>
+        /// End up vector angle in degrees
+        /// </summary>
+        float EndUpVectorAngle { get; set; }
+
+        /// <summary>
         /// Start tangent
         /// </summary>
         Vector3 StartTangent { get; set; }

@@ -37,7 +37,7 @@ namespace UnityCurves.Controllers
         /// Path
         /// </summary>
         [SerializeField]
-        private BezierCurveData path = new BezierCurveData();
+        private BezierCurveData path = new();
 
         /// <summary>
         /// Baked path key segments
@@ -86,6 +86,14 @@ namespace UnityCurves.Controllers
         public IApproximateBezierCurveKeySegments BakedPathKeySegments { get; private set; } = new ApproximateBezierCurveKeySegments(Array.Empty<IApproximateBezierCurveKeySegment>());
 
         /// <summary>
+        /// Gets the approximate bezier curve point in world space
+        /// </summary>
+        /// <param name="localApproximateBezierCurvePoint">Local approximate bezier curve point</param>
+        /// <returns>Approximate bezier curve point in world space</returns>
+        public IApproximateBezierCurvePoint GetWorldApproximateBezierCurvePoint(IApproximateBezierCurvePoint localApproximateBezierCurvePoint) =>
+            new ApproximateBezierCurvePoint(transform.TransformPoint(localApproximateBezierCurvePoint.Position), transform.TransformDirection(localApproximateBezierCurvePoint.Forward), transform.TransformDirection(localApproximateBezierCurvePoint.Up), localApproximateBezierCurvePoint.Progress);
+
+        /// <summary>
         /// Bakes target path key segments
         /// </summary>
         private void BakeTargetPathKeySegments()
@@ -104,18 +112,31 @@ namespace UnityCurves.Controllers
         }
 
         /// <summary>
-        /// Gets Bézier curve object state
+        /// Gets an approximate Bézier curve point
         /// </summary>
         /// <param name="progress">Progress</param>
-        /// <returns>Bézier curve object state</returns>
-        public IApproximateBezierCurveObjectState GetBezierCurveObjectState(float progress)
+        /// <returns>Approximate Bézier curve point</returns>
+        public IApproximateBezierCurvePoint GetApproximateBezierCurvePoint(float progress)
         {
             if ((Path.Keys.Count * pathKeySegmentCount) != bakedPathKeySegments.Length)
             {
                 BakeTargetPathKeySegments();
             }
-            IApproximateBezierCurveObjectState approximate_bezier_curve_object_state = BezierCurveUtilities.GetApproximateBezierCurveObjectState(BakedPathKeySegments, progress, progressWrapMode, isInterpolatingForwardVector);
-            return new ApproximateBezierCurveObjectState(transform.TransformPoint(approximate_bezier_curve_object_state.Position), transform.TransformDirection(approximate_bezier_curve_object_state.Forward));
+            return GetWorldApproximateBezierCurvePoint(BezierCurveUtilities.GetApproximateBezierCurveObjectState(BakedPathKeySegments, progress, progressWrapMode, isInterpolatingForwardVector));
+        }
+
+        /// <summary>
+        /// Gets the closest approximate point to bezier curve
+        /// </summary>
+        /// <param name="position">Position</param>
+        /// <returns>Closest approximate point to bezier curve</returns>
+        public IApproximateBezierCurvePoint GetClosestApproximatePointToBezierCurve(Vector3 position)
+        {
+            if ((Path.Keys.Count * pathKeySegmentCount) != bakedPathKeySegments.Length)
+            {
+                BakeTargetPathKeySegments();
+            }
+            return GetWorldApproximateBezierCurvePoint(BezierCurveUtilities.GetClosestPointToBezierCurve(BakedPathKeySegments.Segments, transform.InverseTransformPoint(position)));
         }
 
         /// <summary>

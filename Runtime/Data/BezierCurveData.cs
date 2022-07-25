@@ -17,9 +17,9 @@ namespace UnityCurves.Data
         /// Keys
         /// </summary>
         [SerializeField]
-        private List<BezierCurveKeyData> keys = new List<BezierCurveKeyData>()
+        private List<BezierCurveKeyData> keys = new()
         {
-            new BezierCurveKeyData(Vector3.zero, Vector3.right, Vector3.right * 0.5f, Vector3.right * 0.5f, true, true)
+            new(Vector3.zero, Vector3.right, 0.0f, 0.0f, Vector3.right * 0.5f, Vector3.right * 0.5f, true, true, true)
         };
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace UnityCurves.Data
         /// </summary>
         public List<BezierCurveKeyData> Keys
         {
-            get => keys ??= new List<BezierCurveKeyData>();
+            get => keys ??= new();
             set => keys = value ?? throw new ArgumentNullException(nameof(value));
         }
     }

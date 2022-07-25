@@ -21,6 +21,11 @@ namespace UnityCurves
         Vector3 Forward { get; }
 
         /// <summary>
+        /// Up vector angle in degrees
+        /// </summary>
+        float UpVectorAngle { get; }
+
+        /// <summary>
         /// Delta
         /// </summary>
         Vector3 Delta { get; }

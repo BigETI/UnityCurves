@@ -120,6 +120,8 @@ namespace UnityCurvesEditor.EditorScripts
                         curves_controller.PreviewTargetGizmoSize = curves_settings.PreviewTargetGizmoSize;
                         curves_controller.PreviewTargetForwardGizmoColor = curves_settings.PreviewTargetForwardGizmoColor;
                         curves_controller.PreviewTargetForwardGizmoSize = curves_settings.PreviewTargetForwardGizmoSize;
+                        curves_controller.PreviewTargetUpGizmoColor = curves_settings.PreviewTargetUpGizmoColor;
+                        curves_controller.PreviewTargetUpGizmoSize = curves_settings.PreviewTargetUpGizmoSize;
                     }
                     for (int index = 0; index < keys.Count; index++)
                     {
@@ -148,7 +150,7 @@ namespace UnityCurvesEditor.EditorScripts
                             )
                             {
                                 Undo.RecordObject(base_curves_controller, "Modify curve properties");
-                                BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, index, new_start_position, new_end_position, new_start_tangent, new_end_tangent, target_path_key.IsEndPositionConnected, target_path_key.IsEndTangentConnected);
+                                BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, index, new_start_position, new_end_position, target_path_key.StartUpVectorAngle, target_path_key.EndUpVectorAngle, new_start_tangent, new_end_tangent, target_path_key.IsEndPositionConnected, target_path_key.IsEndUpVectorAngleConnected, target_path_key.IsEndTangentConnected);
                                 serializedObject.ApplyModifiedPropertiesWithoutUndo();
                                 RepaintWindow();
                             }

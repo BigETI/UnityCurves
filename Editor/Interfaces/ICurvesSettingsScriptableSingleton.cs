@@ -48,6 +48,16 @@ namespace UnityCurvesEditor
         float PreviewTargetForwardGizmoSize { get; set; }
 
         /// <summary>
+        /// Preview target up gizmo size
+        /// </summary>
+        Color PreviewTargetUpGizmoColor { get; set; }
+
+        /// <summary>
+        /// Preview target up gizmo size
+        /// </summary>
+        float PreviewTargetUpGizmoSize { get; set; }
+
+        /// <summary>
         /// Primary font color
         /// </summary>
         Color32 PrimaryFontColor { get; set; }

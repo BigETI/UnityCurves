@@ -93,23 +93,28 @@ namespace UnityCurvesEditor.EditorWindows
                     int selected_index = current_curves_controller_editor.SelectedIndex;
                     if ((selected_index >= 0) && (selected_index < keys.Count))
                     {
-                        BezierCurveKeyData chargine_eye_path_key = keys[selected_index];
+                        BezierCurveKeyData bezier_curve_key_data = keys[selected_index];
                         IsShowingAbsolutePositions = EditorGUILayout.Toggle("Show absolute positions", IsShowingAbsolutePositions);
                         Vector3 offset = IsShowingAbsolutePositions ? GetAbsoluteOffset(base_curves_controller.Path.Keys, selected_index) : Vector3.zero;
-                        Vector3 new_start_position = EditorGUILayout.Vector3Field("Start position (relative)", chargine_eye_path_key.StartPosition + offset) - offset;
-                        Vector3 new_end_position = EditorGUILayout.Vector3Field("End position (relative)", chargine_eye_path_key.EndPosition + offset) - offset;
-                        Vector3 new_start_tangent = EditorGUILayout.Vector3Field("Start tangent (relative)", chargine_eye_path_key.StartTangent + offset) - offset;
-                        Vector3 new_end_tangent = EditorGUILayout.Vector3Field("End tangent (relative)", chargine_eye_path_key.EndTangent + offset) - offset;
-                        bool new_is_end_position_connected = EditorGUILayout.Toggle("Is end position connected", chargine_eye_path_key.IsEndPositionConnected);
-                        bool new_is_end_tangent_connected = EditorGUILayout.Toggle("Is end tangent connected", chargine_eye_path_key.IsEndTangentConnected);
+                        Vector3 new_start_position = EditorGUILayout.Vector3Field("Start position (relative)", bezier_curve_key_data.StartPosition + offset) - offset;
+                        Vector3 new_end_position = EditorGUILayout.Vector3Field("End position (relative)", bezier_curve_key_data.EndPosition + offset) - offset;
+                        float new_start_up_vector_angle = EditorGUILayout.FloatField("Start up vector angle (relative)", bezier_curve_key_data.StartUpVectorAngle);
+                        float new_end_up_vector_angle = EditorGUILayout.FloatField("End up vector angle (relative)", bezier_curve_key_data.EndUpVectorAngle);
+                        Vector3 new_start_tangent = EditorGUILayout.Vector3Field("Start tangent (relative)", bezier_curve_key_data.StartTangent + offset) - offset;
+                        Vector3 new_end_tangent = EditorGUILayout.Vector3Field("End tangent (relative)", bezier_curve_key_data.EndTangent + offset) - offset;
+                        bool new_is_end_position_connected = EditorGUILayout.Toggle("Is end position connected", bezier_curve_key_data.IsEndPositionConnected);
+                        bool new_is_end_up_vector_angle_connected = EditorGUILayout.Toggle("Is end up vector angle connected", bezier_curve_key_data.IsEndUpVectorAngleConnected);
+                        bool new_is_end_tangent_connected = EditorGUILayout.Toggle("Is end tangent connected", bezier_curve_key_data.IsEndTangentConnected);
                         if
                         (
-                            (chargine_eye_path_key.StartPosition != new_start_position) ||
-                            (chargine_eye_path_key.EndPosition != new_end_position) ||
-                            (chargine_eye_path_key.StartTangent != new_start_tangent) ||
-                            (chargine_eye_path_key.EndTangent != new_end_tangent) ||
-                            (chargine_eye_path_key.IsEndPositionConnected != new_is_end_position_connected) ||
-                            (chargine_eye_path_key.IsEndTangentConnected != new_is_end_tangent_connected)
+                            (bezier_curve_key_data.StartPosition != new_start_position) ||
+                            (bezier_curve_key_data.EndPosition != new_end_position) ||
+                            (bezier_curve_key_data.StartUpVectorAngle != new_start_up_vector_angle) ||
+                            (bezier_curve_key_data.EndUpVectorAngle != new_end_up_vector_angle) ||
+                            (bezier_curve_key_data.StartTangent != new_start_tangent) ||
+                            (bezier_curve_key_data.EndTangent != new_end_tangent) ||
+                            (bezier_curve_key_data.IsEndPositionConnected != new_is_end_position_connected) ||
+                            (bezier_curve_key_data.IsEndTangentConnected != new_is_end_tangent_connected)
                         )
                         {
                             if (selected_index == 0)
@@ -122,15 +127,15 @@ namespace UnityCurvesEditor.EditorWindows
                             {
                                 Undo.RecordObject(base_curves_controller, "Modify curve properties");
                             }
-                            BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, selected_index, new_start_position, new_end_position, new_start_tangent, new_end_tangent, new_is_end_position_connected, new_is_end_tangent_connected);
+                            BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, selected_index, new_start_position, new_end_position, new_start_up_vector_angle, new_end_up_vector_angle, new_start_tangent, new_end_tangent, new_is_end_position_connected, new_is_end_up_vector_angle_connected, new_is_end_tangent_connected);
                             EditorUtility.SetDirty(base_curves_controller);
                             EditorApplication.QueuePlayerLoopUpdate();
                         }
                         if (GUILayout.Button("Insert key before"))
                         {
                             Undo.RecordObject(base_curves_controller, $"Insert curve at index { selected_index }");
-                            keys.Insert(selected_index, new BezierCurveKeyData(chargine_eye_path_key.StartPosition, chargine_eye_path_key.EndPosition, chargine_eye_path_key.StartTangent, chargine_eye_path_key.EndTangent, false, false));
-                            BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, selected_index, chargine_eye_path_key.StartPosition, chargine_eye_path_key.EndPosition, chargine_eye_path_key.StartTangent, chargine_eye_path_key.EndTangent, chargine_eye_path_key.IsEndPositionConnected, chargine_eye_path_key.IsEndTangentConnected);
+                            keys.Insert(selected_index, new BezierCurveKeyData(bezier_curve_key_data.StartPosition, bezier_curve_key_data.EndPosition, bezier_curve_key_data.StartUpVectorAngle, bezier_curve_key_data.EndUpVectorAngle, bezier_curve_key_data.StartTangent, bezier_curve_key_data.EndTangent, false, false, false));
+                            BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, selected_index, bezier_curve_key_data.StartPosition, bezier_curve_key_data.EndPosition, bezier_curve_key_data.StartUpVectorAngle, bezier_curve_key_data.EndUpVectorAngle, bezier_curve_key_data.StartTangent, bezier_curve_key_data.EndTangent, bezier_curve_key_data.IsEndPositionConnected, bezier_curve_key_data.IsEndUpVectorAngleConnected, bezier_curve_key_data.IsEndTangentConnected);
                             EditorUtility.SetDirty(base_curves_controller);
                             EditorApplication.QueuePlayerLoopUpdate();
                         }
@@ -138,9 +143,9 @@ namespace UnityCurvesEditor.EditorWindows
                         {
                             int new_selected_index = selected_index + 1;
                             Undo.RecordObject(base_curves_controller, $"Insert curve at index { new_selected_index }");
-                            keys.Insert(new_selected_index, new BezierCurveKeyData(chargine_eye_path_key.StartPosition, chargine_eye_path_key.EndPosition, chargine_eye_path_key.StartTangent, chargine_eye_path_key.EndTangent, false, false));
-                            BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, selected_index, chargine_eye_path_key.StartPosition, chargine_eye_path_key.EndPosition, chargine_eye_path_key.StartTangent, chargine_eye_path_key.EndTangent, chargine_eye_path_key.IsEndPositionConnected, chargine_eye_path_key.IsEndTangentConnected);
-                            BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, new_selected_index, chargine_eye_path_key.StartPosition, chargine_eye_path_key.EndPosition, chargine_eye_path_key.StartTangent, chargine_eye_path_key.EndTangent, chargine_eye_path_key.IsEndPositionConnected, chargine_eye_path_key.IsEndTangentConnected);
+                            keys.Insert(new_selected_index, new BezierCurveKeyData(bezier_curve_key_data.StartPosition, bezier_curve_key_data.EndPosition, bezier_curve_key_data.StartUpVectorAngle, bezier_curve_key_data.EndUpVectorAngle, bezier_curve_key_data.StartTangent, bezier_curve_key_data.EndTangent, false, false, false));
+                            BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, selected_index, bezier_curve_key_data.StartPosition, bezier_curve_key_data.EndPosition, bezier_curve_key_data.StartUpVectorAngle, bezier_curve_key_data.EndUpVectorAngle, bezier_curve_key_data.StartTangent, bezier_curve_key_data.EndTangent, bezier_curve_key_data.IsEndPositionConnected, bezier_curve_key_data.IsEndUpVectorAngleConnected, bezier_curve_key_data.IsEndTangentConnected);
+                            BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, new_selected_index, bezier_curve_key_data.StartPosition, bezier_curve_key_data.EndPosition, bezier_curve_key_data.StartUpVectorAngle, bezier_curve_key_data.EndUpVectorAngle, bezier_curve_key_data.StartTangent, bezier_curve_key_data.EndTangent, bezier_curve_key_data.IsEndPositionConnected, bezier_curve_key_data.IsEndUpVectorAngleConnected, bezier_curve_key_data.IsEndTangentConnected);
                             current_curves_controller_editor.SelectedIndex = new_selected_index;
                             EditorUtility.SetDirty(base_curves_controller);
                             EditorApplication.QueuePlayerLoopUpdate();
@@ -152,8 +157,8 @@ namespace UnityCurvesEditor.EditorWindows
                             keys.RemoveAt(selected_index);
                             if (previous_selected_index >= 0)
                             {
-                                BezierCurveKeyData key = keys[previous_selected_index];
-                                BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, previous_selected_index, key.StartPosition, key.EndPosition, key.StartTangent, key.EndTangent, key.IsEndPositionConnected, key.IsEndTangentConnected);
+                                BezierCurveKeyData previous_bezier_curve_key_data = keys[previous_selected_index];
+                                BezierCurveUtilities.ApplyBezierCurveKeyDataProperties(keys, previous_selected_index, previous_bezier_curve_key_data.StartPosition, previous_bezier_curve_key_data.EndPosition, previous_bezier_curve_key_data.StartUpVectorAngle, previous_bezier_curve_key_data.EndUpVectorAngle, previous_bezier_curve_key_data.StartTangent, previous_bezier_curve_key_data.EndTangent, previous_bezier_curve_key_data.IsEndPositionConnected, previous_bezier_curve_key_data.IsEndUpVectorAngleConnected, previous_bezier_curve_key_data.IsEndTangentConnected);
                             }
                             EditorUtility.SetDirty(base_curves_controller);
                             EditorApplication.QueuePlayerLoopUpdate();

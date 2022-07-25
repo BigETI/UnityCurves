@@ -52,23 +52,36 @@ namespace UnityCurvesEditor
         private Color previewTargetForwardGizmoColor = Color.cyan;
 
         /// <summary>
-        /// Preview target gizmo size
+        /// Preview target forward gizmo size
         /// </summary>
         [SerializeField]
         [Min(0.0f)]
         private float previewTargetForwardGizmoSize = 10.0f;
+        
+        /// <summary>
+        /// Preview target up gizmo size
+        /// </summary>
+        [SerializeField]
+        private Color previewTargetUpGizmoColor = Color.cyan;
+
+        /// <summary>
+        /// Preview target up gizmo size
+        /// </summary>
+        [SerializeField]
+        [Min(0.0f)]
+        private float previewTargetUpGizmoSize = 10.0f;
 
         /// <summary>
         /// Primary font color
         /// </summary>
         [SerializeField]
-        private Color32 primaryFontColor = new Color32(0xFF, 0xFF, 0xFF, 0xFF);
+        private Color32 primaryFontColor = new(0xFF, 0xFF, 0xFF, 0xFF);
 
         /// <summary>
         /// Secondary font color
         /// </summary>
         [SerializeField]
-        private Color32 secondaryFontColor = new Color32(0x0, 0xFF, 0xFF, 0xFF);
+        private Color32 secondaryFontColor = new(0x0, 0xFF, 0xFF, 0xFF);
 
         /// <summary>
         /// Handle cap color
@@ -211,6 +224,39 @@ namespace UnityCurvesEditor
                 if (previewTargetForwardGizmoSize != new_preview_target_forward_gizmo_size)
                 {
                     previewTargetForwardGizmoSize = new_preview_target_forward_gizmo_size;
+                    Save(true);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Preview target up gizmo size
+        /// </summary>
+        public Color PreviewTargetUpGizmoColor
+        {
+            get => previewTargetUpGizmoColor;
+            set
+            {
+                if (previewTargetUpGizmoColor != value)
+                {
+                    previewTargetUpGizmoColor = value;
+                    Save(true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Preview target up gizmo size
+        /// </summary>
+        public float PreviewTargetUpGizmoSize
+        {
+            get => previewTargetUpGizmoSize;
+            set
+            {
+                float new_preview_target_up_gizmo_size = Mathf.Max(value, 0.0f);
+                if (previewTargetUpGizmoSize != new_preview_target_up_gizmo_size)
+                {
+                    previewTargetUpGizmoSize = new_preview_target_up_gizmo_size;
                     Save(true);
                 }
             }

@@ -44,7 +44,7 @@ namespace UnityCurves.Controllers
         /// <summary>
         /// Target state
         /// </summary>
-        public IApproximateBezierCurveObjectState TargetState => GetBezierCurveObjectState(progress);
+        public IApproximateBezierCurvePoint TargetState => GetApproximateBezierCurvePoint(progress);
 
 #if UNITY_EDITOR
         /// <summary>
@@ -66,11 +66,21 @@ namespace UnityCurves.Controllers
         /// Preview target forward gizmo color
         /// </summary>
         public Color PreviewTargetForwardGizmoColor { get; set; } = Color.cyan;
-
+        
         /// <summary>
         /// Preview target forward gizmo size
         /// </summary>
         public float PreviewTargetForwardGizmoSize { get; set; } = 10.0f;
+
+        /// <summary>
+        /// Preview target up gizmo color
+        /// </summary>
+        public Color PreviewTargetUpGizmoColor { get; set; } = Color.cyan;
+
+        /// <summary>
+        /// Preview target up gizmo size
+        /// </summary>
+        public float PreviewTargetUpGizmoSize { get; set; } = 10.0f;
 #endif
 
         /// <summary>
@@ -96,7 +106,7 @@ namespace UnityCurves.Controllers
         {
             if (targetTransform)
             {
-                IApproximateBezierCurveObjectState target_state = TargetState;
+                IApproximateBezierCurvePoint target_state = TargetState;
                 targetTransform.position = target_state.Position;
                 targetTransform.LookAt(target_state.Position + target_state.Forward, Vector3.up);
             }
@@ -120,10 +130,12 @@ namespace UnityCurves.Controllers
         /// </summary>
         protected virtual void OnDrawGizmosSelected()
         {
+            IApproximateBezierCurvePoint target_state = TargetState;
             Color old_color = Gizmos.color;
             Gizmos.color = PreviewTargetForwardGizmoColor;
-            IApproximateBezierCurveObjectState target_state = TargetState;
             Gizmos.DrawLine(target_state.Position, target_state.Position + (target_state.Forward * PreviewTargetForwardGizmoSize));
+            Gizmos.color = PreviewTargetForwardGizmoColor;
+            Gizmos.DrawLine(target_state.Position, target_state.Position + (target_state.Up * PreviewTargetUpGizmoSize));
             Gizmos.color = PreviewTargetGizmoColor;
             switch (PreviewTargetGizmoType)
             {
